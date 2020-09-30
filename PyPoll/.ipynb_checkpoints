@@ -1,0 +1,118 @@
+import csv
+import pandas as pd
+
+election = r"C:\Users\skm72\Desktop\git\Homework\Python - Challenge\python_challenge\Resources\election_data.csv"
+election_df=pd.read_csv(election)
+election_df.head()
+
+Out[1]:
+	Voter ID 	County 	Candidate
+0 	12864552 	Marsh 	Khan
+1 	17444633 	Marsh 	Correy
+2 	19330107 	Marsh 	Khan
+3 	19865775 	Queen 	Khan
+4 	11927875 	Marsh 	Khan
+In [2]:
+
+#Total amount of votes
+with open(election) as csvfile:
+    voters_count = sum(1 for row in csvfile)
+
+In [3]:
+
+#Finding all the different candidates names and the amount of votes they got
+candidates = []
+
+votes = []
+for person in election_df["Candidate"]:
+    if person not in candidates:
+        candidates.append(person)
+        votes.append(1)
+    else:
+        candidate_index = candidates.index(person)
+        votes[candidate_index] += 1
+        
+max_vote = 0
+max_candidates = []
+for i in range(len(votes)):
+    if votes[i] > max_vote:
+        max_vote = votes[i]
+        candidate = candidates[i]
+        max_candidates = []
+        max_candidates.append(candidate)
+
+In [4]:
+
+#Printing the values to make sure that we got all the information correctly
+print(candidates)
+print(votes)
+
+['Khan', 'Correy', 'Li', "O'Tooley"]
+[2218231, 704200, 492940, 105630]
+
+In [5]:
+
+#Taking the values of the votes and defining them
+khan_votes = votes[0]
+correy_votes = votes[1]
+li_votes = votes[2]
+otooley_votes = votes[3]
+
+In [6]:
+
+#Getting the percentages
+khan_percentage = round((khan_votes/voters_count)*100, 3)
+correy_percentage = round((correy_votes/voters_count)*100, 3)
+li_percentage = round((li_votes/voters_count)*100, 3)
+otooley_percentage = round((otooley_votes/voters_count)*100, 3)
+
+In [7]:
+
+#Turned the array into a string
+top_candidate = "".join(map(str, max_candidates))
+
+In [8]:
+
+print("Election Results")
+print("----------------------------")
+print("Total Votes: " + str(voters_count))
+print("----------------------------")
+print(str(candidates[0]) + ": " + str(khan_percentage) + "% " + "(" + str(khan_votes) + ")")
+print(str(candidates[1]) + ": " + str(correy_percentage) + "% " + "(" + str(correy_votes) + ")")
+print(str(candidates[2]) + ": " + str(li_percentage) + "% " + "(" + str(li_votes) + ")")
+print(str(candidates[3]) + ": " + str(otooley_percentage) + "% " + "(" + str(otooley_votes) + ")")
+print("----------------------------")
+print("Winner: " + top_candidate)
+print("----------------------------")
+
+Election Results
+----------------------------
+Total Votes: 3521002
+----------------------------
+Khan: 63.0% (2218231)
+Correy: 20.0% (704200)
+Li: 14.0% (492940)
+O'Tooley: 3.0% (105630)
+----------------------------
+Winner: Khan
+----------------------------
+
+In [9]:
+
+with open("Election Results.txt", "w") as file:
+    file.write("Election Results" + "\n" +
+               "----------------------------" + "\n" +
+               "Total Votes: " + str(voters_count) + "\n" +
+               "----------------------------" + "\n" +
+               str(candidates[0]) + ": " + str(khan_percentage) + "% " + "(" + str(khan_votes) + ")" + "\n" +
+               str(candidates[1]) + ": " + str(correy_percentage) + "% " + "(" + str(correy_votes) + ")" + "\n" +
+               str(candidates[2]) + ": " + str(li_percentage) + "% " + "(" + str(li_votes) + ")" + "\n" +
+               str(candidates[3]) + ": " + str(otooley_percentage) + "% " + "(" + str(otooley_votes) + ")" + "\n" +
+               "----------------------------" + "\n" +
+               "Winner: " + top_candidate + "\n" +
+               "----------------------------")
+file.close()
+
+In [ ]:
+
+
